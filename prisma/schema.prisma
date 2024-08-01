@@ -20,6 +20,7 @@ model User {
   firstname      String
   lastname       String
   profilepicture String?
+  job            Job[]
 }
 
 model Job {
@@ -33,6 +34,9 @@ model Job {
   jobtype     JobType
   jobcategory JobCategory
   createdAt   DateTime    @default(now())
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id])
 }
 
 enum JobType {

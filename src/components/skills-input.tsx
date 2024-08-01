@@ -31,7 +31,6 @@ export default function SkillsInput({ skills, setSkills }: SkillsInputProps) {
           id="skills"
           type="text"
           placeholder="Add a skill"
-          required
           value={skill}
           onChange={(e) => setSkill(e.target.value)}
         />
