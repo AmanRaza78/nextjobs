@@ -21,9 +21,9 @@ export default async function Navbar() {
           Find Jobs
         </Link>
         <Link href="#" className="hover:underline">
-          Employers
+          Post a Job
         </Link>
-        <Link href="#" className="hover:underline">
+        <Link href="/postjob" className="hover:underline">
           About
         </Link>
         <Link href="#" className="hover:underline">

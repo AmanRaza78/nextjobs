@@ -9,15 +9,39 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL")
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model User {
-  id String @id
-  email String
-  firstname String
-  lastname String
+  id             String  @id
+  email          String
+  firstname      String
+  lastname       String
   profilepicture String?
+}
+
+model Job {
+  id          String      @id @default(uuid())
+  title       String
+  description Json
+  companyname String
+  Salary      Int
+  experience  Int
+  skills      String[]
+  jobtype     JobType
+  jobcategory JobCategory
+  createdAt   DateTime    @default(now())
+}
+
+enum JobType {
+  REMOTE
+  OFFSITE
+  HYBRID
+}
+
+enum JobCategory {
+  IT
+  NON_IT
 }
