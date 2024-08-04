@@ -1,9 +1,26 @@
+import JobCard from "@/components/job-card";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import prisma from "@/lib/db";
 import { ArrowRightIcon, SearchIcon, UsersIcon, Briefcase } from "lucide-react";
 import Link from "next/link";
 
-export default function Home() {
+async function getData(){
+  const data = await prisma.job.findMany({
+      select:{
+          id: true,
+          title: true,
+          companyname: true,
+          jobcategory: true,
+          jobtype: true,
+          smalldescription:true
+      }
+  })
+  return data
+}
+
+export default async function Home() {
+  const data = await getData()
   return (
     <main className="flex-1">
       <section className="bg-primary py-20 px-6">
@@ -27,76 +44,20 @@ export default function Home() {
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Card>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-2">Software Engineer</h3>
-                <p className="text-muted-foreground mb-4">
-                  Acme Inc. - San Francisco, CA
-                </p>
-                <div className="flex items-center gap-2 mb-4">
-                  <Badge variant="secondary">Full-time</Badge>
-                  <Badge variant="secondary">Remote</Badge>
-                </div>
-                <p className="text-muted-foreground mb-4">
-                  We are looking for an experienced software engineer to join
-                  our team and help build our next-generation platform.
-                </p>
-                <Link
-                  href="#"
-                  className="inline-flex items-center gap-2 text-primary hover:underline"
-                >
-                  <span>Apply Now</span>
-                  <ArrowRightIcon className="h-4 w-4" />
-                </Link>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-2">Marketing Manager</h3>
-                <p className="text-muted-foreground mb-4">
-                  Globex Corporation - Remote
-                </p>
-                <div className="flex items-center gap-2 mb-4">
-                  <Badge variant="secondary">Full-time</Badge>
-                  <Badge variant="secondary">Remote</Badge>
-                </div>
-                <p className="text-muted-foreground mb-4">
-                  We are seeking a talented marketing manager to lead our
-                  digital marketing efforts and drive growth for our products.
-                </p>
-                <Link
-                  href="#"
-                  className="inline-flex items-center gap-2 text-primary hover:underline"
-                >
-                  <span>Apply Now</span>
-                  <ArrowRightIcon className="h-4 w-4" />
-                </Link>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-2">Product Designer</h3>
-                <p className="text-muted-foreground mb-4">
-                  Stark Industries - New York, NY
-                </p>
-                <div className="flex items-center gap-2 mb-4">
-                  <Badge variant="secondary">Full-time</Badge>
-                  <Badge variant="secondary">Hybrid</Badge>
-                </div>
-                <p className="text-muted-foreground mb-4">
-                  We are looking for a talented product designer to join our
-                  design team and help create innovative and user-friendly
-                  products.
-                </p>
-                <Link
-                  href="#"
-                  className="inline-flex items-center gap-2 text-primary hover:underline"
-                >
-                  <span>Apply Now</span>
-                  <ArrowRightIcon className="h-4 w-4" />
-                </Link>
-              </CardContent>
-            </Card>
+            {
+              data.map((job)=>(
+                <JobCard
+                key={job.id}
+                title={job.title}
+                jobcategory={job.jobcategory}
+                jobtype={job.jobtype}
+                companyname={job.companyname}
+                smalldescription={job.smalldescription}
+                id = {job.id}
+                />
+              ))
+            }
+            
           </div>
         </div>
       </section>

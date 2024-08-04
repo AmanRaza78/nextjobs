@@ -12,7 +12,7 @@ export default async function Navbar() {
   const { isAuthenticated } = getKindeServerSession();
   return (
     <header className="bg-primary text-primary-foreground py-4 px-6 flex items-center justify-between">
-      <Link href="#" className="flex items-center gap-2">
+      <Link href="/" className="flex items-center gap-2">
         <Briefcase className="h-6 w-6" />
         <span className="text-xl font-bold">JobPortal</span>
       </Link>
@@ -20,10 +20,10 @@ export default async function Navbar() {
         <Link href="#" className="hover:underline">
           Find Jobs
         </Link>
-        <Link href="#" className="hover:underline">
+        <Link href="/postjob" className="hover:underline">
           Post a Job
         </Link>
-        <Link href="/postjob" className="hover:underline">
+        <Link href="#" className="hover:underline">
           About
         </Link>
         <Link href="#" className="hover:underline">

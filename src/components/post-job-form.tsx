@@ -12,6 +12,7 @@ import { CreateJobPost, type State } from "@/app/action";
 import { useFormState } from "react-dom";
 import { toast } from "sonner";
 import SubmitButton from "./submit-button";
+import { Textarea } from "./ui/textarea";
 
 const TipTapEditor = dynamic(() => import("./Editor"), { ssr: false });
 
@@ -66,6 +67,23 @@ export default function PostJobForm() {
             <p className="text-destructive">{state?.errors?.["title"]?.[0]}</p>
           )}
         </div>
+
+        <div className="flex flex-col gap-y-2">
+          <Label htmlFor="smalldescription">Small Description</Label>
+          <Textarea
+            id="smalldescription"
+            placeholder="Small description of product"
+            required
+            minLength={10}
+            name="smalldescription"
+          />
+          {state?.errors?.["smalldescription"]?.[0] && (
+            <p className="text-destructive">
+              {state?.errors?.["smalldescription"]?.[0]}
+            </p>
+          )}
+        </div>
+
 
         <div className="flex flex-col gap-y-2">
           <input

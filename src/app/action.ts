@@ -1,7 +1,7 @@
-"use server"
+"use server";
 import prisma from "@/lib/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { type JobType, type JobCategory} from "@prisma/client";
+import { type JobType, type JobCategory } from "@prisma/client";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
@@ -21,6 +21,9 @@ const jobPostSchema = z.object({
     .string()
     .min(5, { message: "Job title should be a min character of length 5" }),
   description: z.string().min(10, { message: "Description is required" }),
+  smalldescription: z
+    .string()
+    .min(10, { message: "Please give a small summary of your job post" }),
   salary: z.number().min(1, { message: "Salary is required" }),
   experience: z.number().min(1, { message: "Experience is required" }),
   jobcategory: z.string().min(1, { message: "Job category is required" }),
@@ -45,6 +48,7 @@ export async function CreateJobPost(prevState: any, formData: FormData) {
   const parsedFields = jobPostSchema.safeParse({
     companyname: formData.get("companyname"),
     title: formData.get("title"),
+    smalldescription: formData.get('smalldescription'),
     description: formData.get("description"),
     salary: Number(formData.get("salary")),
     experience: Number(formData.get("experience")),
@@ -64,18 +68,19 @@ export async function CreateJobPost(prevState: any, formData: FormData) {
   }
 
   const data = await prisma.job.create({
-    data:{
-        companyname: parsedFields.data.companyname,
-        title: parsedFields.data.title,
-        description: JSON.parse(parsedFields.data.description),
-        Salary: parsedFields.data.salary,
-        experience: parsedFields.data.experience,
-        jobcategory: parsedFields.data.jobcategory as JobCategory,
-        jobtype: parsedFields.data.jobtype as JobType,
-        skills: parsedFields.data.skills,
-        userId: user.id
-    }
-  })
+    data: {
+      companyname: parsedFields.data.companyname,
+      title: parsedFields.data.title,
+      smalldescription: parsedFields.data.smalldescription,
+      description: JSON.parse(parsedFields.data.description),
+      Salary: parsedFields.data.salary,
+      experience: parsedFields.data.experience,
+      jobcategory: parsedFields.data.jobcategory as JobCategory,
+      jobtype: parsedFields.data.jobtype as JobType,
+      skills: parsedFields.data.skills,
+      userId: user.id,
+    },
+  });
 
   return redirect(`/job/${data.id}`);
 }
