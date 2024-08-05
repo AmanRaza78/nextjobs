@@ -84,7 +84,6 @@ export default function PostJobForm() {
           )}
         </div>
 
-
         <div className="flex flex-col gap-y-2">
           <input
             type="hidden"
@@ -126,7 +125,9 @@ export default function PostJobForm() {
             min={1}
           />
           {state?.errors?.["experience"]?.[0] && (
-            <p className="text-destructive">{state?.errors?.["experience"]?.[0]}</p>
+            <p className="text-destructive">
+              {state?.errors?.["experience"]?.[0]}
+            </p>
           )}
         </div>
 
@@ -134,7 +135,9 @@ export default function PostJobForm() {
           <Label>Job Category</Label>
           <SelectJobCategory />
           {state?.errors?.["jobcategory"]?.[0] && (
-            <p className="text-destructive">{state?.errors?.["jobcategory"]?.[0]}</p>
+            <p className="text-destructive">
+              {state?.errors?.["jobcategory"]?.[0]}
+            </p>
           )}
         </div>
 
@@ -142,7 +145,9 @@ export default function PostJobForm() {
           <Label>Job Type</Label>
           <SelectJobType />
           {state?.errors?.["jobtype"]?.[0] && (
-            <p className="text-destructive">{state?.errors?.["jobtype"]?.[0]}</p>
+            <p className="text-destructive">
+              {state?.errors?.["jobtype"]?.[0]}
+            </p>
           )}
         </div>
 
@@ -154,7 +159,7 @@ export default function PostJobForm() {
         </div>
       </CardContent>
       <CardFooter>
-        <SubmitButton title="Create Job"/>
+        <SubmitButton title="Create Job" />
       </CardFooter>
     </form>
   );
