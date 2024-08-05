@@ -17,7 +17,7 @@ export default async function Navbar() {
         <span className="text-xl font-bold">JobPortal</span>
       </Link>
       <nav className="hidden md:flex items-center gap-4">
-        <Link href="#" className="hover:underline">
+        <Link href="/jobs" className="hover:underline">
           Find Jobs
         </Link>
         <Link href="/postjob" className="hover:underline">

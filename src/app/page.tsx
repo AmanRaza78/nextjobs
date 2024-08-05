@@ -1,9 +1,6 @@
 import JobCard from "@/components/job-card";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
 import prisma from "@/lib/db";
-import { ArrowRightIcon, SearchIcon, UsersIcon, Briefcase } from "lucide-react";
-import Link from "next/link";
+import {SearchIcon, UsersIcon, Briefcase } from "lucide-react";
 
 async function getData(){
   const data = await prisma.job.findMany({
@@ -14,6 +11,10 @@ async function getData(){
           jobcategory: true,
           jobtype: true,
           smalldescription:true
+      },
+      take: 3,
+      orderBy:{
+        createdAt: "desc"
       }
   })
   return data
