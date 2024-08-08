@@ -15,29 +15,57 @@ datasource db {
 }
 
 model User {
-  id             String  @id
+  id             String     @id
   email          String
   firstname      String
   lastname       String
   profilepicture String?
   job            Job[]
+  candidate      Candidate?
+
 }
 
 model Job {
-  id          String      @id @default(uuid())
-  title       String
+  id               String      @id @default(uuid())
+  title            String
   smalldescription String
-  description Json
-  companyname String
-  Salary      Int
-  experience  Int
-  skills      String[]
-  jobtype     JobType
-  jobcategory JobCategory
-  createdAt   DateTime    @default(now())
+  description      Json
+  companyname      String
+  Salary           Int
+  experience       Int
+  skills           String[]
+  jobtype          JobType
+  jobcategory      JobCategory
+  createdAt        DateTime    @default(now())
 
-  userId String?
-  user   User?   @relation(fields: [userId], references: [id])
+  userId       String?
+  user         User?         @relation(fields: [userId], references: [id])
+  applications Application[]
+}
+
+model Candidate {
+  id           String        @id @default(uuid())
+  userId       String        @unique
+  user         User          @relation(fields: [userId], references: [id])
+  applications Application[]
+  firstname String
+  lastname String
+  email String
+  linkedinurl String
+  resumeurl String
+  skills String[]
+  workexperience Int
+}
+
+model Application {
+  id          String    @id @default(uuid())
+  candidateId String
+  candidate   Candidate @relation(fields: [candidateId], references: [id])
+  jobid       String
+  job         Job       @relation(fields: [jobid], references: [id])
+  appliedAt   DateTime  @default(now())
+
+  @@unique([candidateId, jobid])
 }
 
 enum JobType {

@@ -7,6 +7,7 @@ import { JSONContent } from "@tiptap/react";
 import { Calendar, HandCoins } from "lucide-react";
 import { Building2 } from "lucide-react";
 import { BriefcaseBusiness } from "lucide-react";
+import Link from "next/link";
 
 async function getData(id: string) {
   const data = await prisma.job.findUnique({
@@ -28,11 +29,40 @@ async function getData(id: string) {
   return data;
 }
 
+async function hasApplied(userId: string, jobid: string) {
+  // Find the Candidate associated with the given userId
+  const candidate = await prisma.candidate.findUnique({
+    where: { userId: userId },
+    select: { id: true },
+  });
+
+  // If no candidate is found, return false
+  if (!candidate) {
+    return false;
+  }
+
+  // Check if the candidate has already applied for the job
+  const application = await prisma.application.findUnique({
+    where: {
+      candidateId_jobid: {
+        candidateId: candidate.id, // Use the Candidate's id here
+        jobid: jobid,
+      },
+    },
+  });
+
+  return application !== null;
+}
+
 export default async function Job({ params }: { params: { id: string } }) {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
-
   const data = await getData(params.id);
+
+  let hasuserapplied = false;
+  if (user?.id) {
+    hasuserapplied = await hasApplied(user.id, params.id);
+  }
   return (
     <div className="w-full">
       <section className="bg-muted py-12 md:py-20 lg:py-24">
@@ -60,7 +90,14 @@ export default async function Job({ params }: { params: { id: string } }) {
               </div>
             </div>
             <div className="flex justify-end">
-              {user?.id !== data?.userId && <Button>Apply Now</Button>}
+              {user?.id !== data?.userId &&
+                (hasuserapplied ? (
+                  <Button disabled>Applied</Button>
+                ) : (
+                  <Link href={`/apply/${params.id}`}>
+                    <Button>Apply Now</Button>
+                  </Link>
+                ))}
             </div>
           </div>
         </div>
